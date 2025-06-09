@@ -1,54 +1,50 @@
-# React + TypeScript + Vite
+# Pokedex Challenge – DeCampoaCampo
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**Autor:** Francisco Bermudez (Frontend Developer)
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 📦 Descripción
 
-## Expanding the ESLint configuration
+Este proyecto es un **challenge técnico** realizado para la empresa **deCampoaCampo**. Consiste en una aplicación de Pokedex sencilla que consume la [PokéAPI](https://pokeapi.co/) y muestra tarjetas con información básica de cada Pokémon.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+---
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+## 🎯 Objetivo
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+- Mostrar una lista de tarjetas de Pokémon.
+- Cada tarjeta debe incluir:
+  - Imagen del Pokémon.  
+  - Nombre.  
+  - Tipos.  
+  - Peso.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+---
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
-```
+## 🛠 Herramientas y enfoques recomendados
+
+- **Vite**  
+  Configuración rápida y recarga en caliente para un desarrollo ágil.
+
+- **Styled Components**  
+  Gestión de estilos en componentes React de forma modular y elegante.
+
+- **Redux Toolkit**  
+  Manejo de estado global de la aplicación (lista de Pokémon, detalles, estado de carga).
+
+- **Compound Pattern**  
+  Arquitectura de componentes escalable:  
+  - `<Container>`: orquesta fetch y control de estado.  
+  - `<CardsContainer>`: muestra la lista paginada con el título del proyecto.  
+  - `<Card>`: tarjeta individual que muestra inicialmente imagen y nombre.  
+  - `<CardDetails>`: modal con detalle avanzado que completan lo pedido en el challenge.
+
+---
+
+## 🚀 Instalación
+
+1. **Clona el repositorio**  
+   ```bash
+   git clone https://github.com/bermudezfran/pokedex.git
+   cd pokedex
+   npm install

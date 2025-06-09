@@ -1,6 +1,5 @@
 import { render, screen } from '@testing-library/react'
 import * as hooks from '../store/hooks'
-// import * as slice from '../store/PokemonSlice'
 import { ContainerData } from '../components/cards/ContainerData'
 
 jest.mock('../store/hooks')
