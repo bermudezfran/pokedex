@@ -32,7 +32,7 @@ const shimmer = keyframes`
 
 const SkeletonGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 1rem;
 
   @media (min-width: 640px) {
@@ -67,7 +67,7 @@ export const ContainerData: React.FC<React.PropsWithChildren<{}>> = ({ children 
     return () => { dispatch(clearSelected()); };
   }, [dispatch]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (status === 'idle') {
       const t = setTimeout(() => setShowOverlay(false), 300);
       return () => clearTimeout(t);
@@ -97,7 +97,9 @@ export const ContainerData: React.FC<React.PropsWithChildren<{}>> = ({ children 
       {showOverlay && (
         <LoadingOverlay style={{ animation: 'opacity 0.3s ease-out forwards', opacity: 1 }} />
       )}
-      <Wrapper>{children}</Wrapper>
+      <Wrapper>
+        {children}
+      </Wrapper>
     </>
   );
 };

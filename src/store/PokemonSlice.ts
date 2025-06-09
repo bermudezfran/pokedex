@@ -2,7 +2,6 @@
 import { createSlice, createAsyncThunk, type PayloadAction } from '@reduxjs/toolkit'
 import type { RootState } from './index'
 import type { PokemonLista, PokemonDetalle, PokemonEnLista } from '../types/Pokemon.type'
-
 interface PokemonState {
   list: PokemonEnLista[]
   selected?: PokemonDetalle
@@ -23,7 +22,10 @@ export const fetchPokemonList = createAsyncThunk<
   'pokemon/fetchList',
   async (_, { rejectWithValue }) => {
     try {
-      const resp = await fetch('https://pokeapi.co/api/v2/pokemon?limit=20');
+      const respCount = await fetch('https://pokeapi.co/api/v2/pokemon?limit=80');
+      const { count } = (await respCount.json()) as { count: number };
+      
+      const resp = await fetch(`https://pokeapi.co/api/v2/pokemon?limit=${count}`);
       const data = (await resp.json()) as PokemonLista;
       return data.results.map(r => {
         const parts = r.url.split('/').filter(Boolean);
