@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React from 'react';
 import styled, { keyframes } from 'styled-components';
 import { useAppSelector, useAppDispatch } from '../../store/hooks';
@@ -8,7 +9,7 @@ const fadeIn = keyframes`
   to   { opacity: 1; transform: translateY(0); }
 `;
 
-const Overlay = styled.div`
+const Overlay = styled.div.attrs({ 'data-testid': 'overlay' } as any)`
   position: fixed;
   inset: 0;
   background: rgba(0,0,0,0.5);
