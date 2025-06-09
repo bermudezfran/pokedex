@@ -1,43 +1,63 @@
 import React, { useState } from "react";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { fetchPokemonDetail, selectList } from "../../store/PokemonSlice";
 import Card from "./Card";
 
+const fade = keyframes`
+  from { opacity: 0; transform: scale(0.8); }
+  to { opacity: 1; transform: scale(1); }
+`;
+
 const Grid = styled.div`
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 1rem;
-  @media (min-width: 640px) {
-    grid-template-columns: repeat(3, 1fr);
-  }
-  @media (min-width: 768px) {
-    grid-template-columns: repeat(4, 1fr);
-  }
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 1.5rem;
+  padding: 2rem;
+  background: radial-gradient(circle at center, #f0f9ff 0%, #cceaff 100%);
+  border-radius: 1.5rem;
+  box-shadow: inset 0 0 50px rgba(0, 123, 255, 0.2);
+  animation: ${fade} 0.6s ease-out both;
 `;
 
 const Pagination = styled.div`
   display: flex;
   justify-content: center;
-  margin: 1rem 0;
+  align-items: center;
+  margin: 2rem 0;
   gap: 1rem;
 `;
 
-const Titulo = styled.div`
-  display: flex;
-  justify-content: center;
+const Titulo = styled.h1`
+  text-align: center;
+  font-family: 'Pokemon Solid', sans-serif;
+  font-size: 3rem;
+  color: #ffcb05;
+  text-shadow: 2px 2px #3b4cca;
   margin: 1rem 0;
-  gap: 1rem;
+  letter-spacing: 0.1rem;
 `;
-
 
 const PageButton = styled.button<{ disabled?: boolean }>`
-  padding: 0.5rem 1rem;
-  border: 1px solid #4c51bf;
-  background: ${({ disabled }) => (disabled ? "#e2e8f0" : "#667eea")};
-  color: ${({ disabled }) => (disabled ? "#a0aec0" : "white")};
-  border-radius: 0.375rem;
+  padding: 0.75rem 1.25rem;
+  border: none;
+  background: ${({ disabled }) => (disabled ? "#ccc" : "#3b4cca")} ;
+  color: #fff;
+  font-weight: bold;
+  font-size: 1rem;
+  border-radius: 1rem;
   cursor: ${({ disabled }) => (disabled ? "not-allowed" : "pointer")};
+  box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+  transition: background 0.3s;
+  &:hover {
+    background: ${({ disabled }) => (disabled ? "#ccc" : "#2a3b99")} ;
+  }
+`;
+
+const PageInfo = styled.span`
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #3b4cca;
 `;
 
 const ITEMS_PER_PAGE = 20;
@@ -54,9 +74,7 @@ export const CardsContainer: React.FC = () => {
 
   return (
     <>
-    <Titulo>
-        <span style={{fontSize: 40, fontWeight: 'bold', color: '#4c51bf'}}>Pokedex</span>
-    </Titulo>
+      <Titulo>Pokedéx Go</Titulo>
       <Grid>
         {pagedList.map((p) => (
           <Card
@@ -73,16 +91,16 @@ export const CardsContainer: React.FC = () => {
           disabled={page === 0}
           onClick={() => setPage((p) => Math.max(p - 1, 0))}
         >
-          {"<"}
+          «
         </PageButton>
-        <span>
+        <PageInfo>
           Página {page + 1} de {totalPages}
-        </span>
+        </PageInfo>
         <PageButton
           disabled={page + 1 >= totalPages}
           onClick={() => setPage((p) => Math.min(p + 1, totalPages - 1))}
         >
-          {">"}
+          »
         </PageButton>
       </Pagination>
     </>

@@ -5,8 +5,8 @@ import { useAppSelector, useAppDispatch } from '../../store/hooks';
 import { selectSelected, clearSelected } from '../../store/PokemonSlice';
 
 const fadeIn = keyframes`
-  from { opacity: 0; transform: translateY(10px); }
-  to   { opacity: 1; transform: translateY(0); }
+  from { opacity: 0; transform: scale(0.9); }
+  to   { opacity: 1; transform: scale(1); }
 `;
 
 const Overlay = styled.div.attrs({ 'data-testid': 'overlay' } as any)`
@@ -20,47 +20,63 @@ const Overlay = styled.div.attrs({ 'data-testid': 'overlay' } as any)`
 `;
 
 const Modal = styled.div`
-  background: #fff;
-  border-radius: 0.75rem;
-  padding: 2rem;
-  width: 90%;
-  max-width: 400px;
+  background: #f5f5f5;
+  border: 8px solid #c80000;
+  border-radius: 1rem;
+  width: 320px;
+  max-width: 90%;
+  box-shadow: inset 0 0 0 4px #eeeeee;
   animation: ${fadeIn} 0.3s ease-out both;
   position: relative;
+  padding: 1rem;
 `;
 
 const CloseButton = styled.button`
   position: absolute;
-  top: 0.75rem;
-  right: 0.75rem;
-  background: transparent;
+  top: -12px;
+  right: -12px;
+  background: #c80000;
+  color: #fff;
   border: none;
-  font-size: 1.25rem;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  font-size: 1rem;
   cursor: pointer;
+`;
+
+const Header = styled.div`
+  background: #c80000;
+  color: #fff;
+  text-align: center;
+  padding: 0.5rem;
+  border-radius: 0.5rem 0.5rem 0 0;
+  font-weight: bold;
+  text-transform: capitalize;
 `;
 
 const Img = styled.img`
   display: block;
-  width: 120px;
-  height: 120px;
-  margin: 0 auto 1rem;
-`;
-
-const Title = styled.h2`
-  text-transform: capitalize;
-  text-align: center;
-  margin: 0.5rem 0;
+  width: 160px;
+  height: 160px;
+  margin: 0.5rem auto;
 `;
 
 const InfoList = styled.ul`
   list-style: none;
   padding: 0;
-  margin: 1rem 0;
+  margin: 0.5rem 0;
+  font-size: 0.9rem;
 `;
 
 const InfoItem = styled.li`
-  margin-bottom: 0.5rem;
-  strong { font-weight: 600; }
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.4rem;
+`;
+
+const Label = styled.span`
+  font-weight: 600;
 `;
 
 export const CardDetails: React.FC = () => {
@@ -72,21 +88,21 @@ export const CardDetails: React.FC = () => {
   return (
     <Overlay onClick={() => dispatch(clearSelected())}>
       <Modal onClick={e => e.stopPropagation()}>
-        <CloseButton onClick={() => dispatch(clearSelected())}>&times;</CloseButton>
+        <CloseButton onClick={() => dispatch(clearSelected())}>×</CloseButton>
+        <Header>{poke.name} #{poke.id}</Header>
         <Img src={poke.sprites.front_default} alt={poke.name} />
-        <Title>{poke.name} (#{poke.id})</Title>
         <InfoList>
           <InfoItem>
-            <strong>Altura:</strong> {poke.height}
+            <Label>Altura:</Label><span>{poke.height}</span>
           </InfoItem>
           <InfoItem>
-            <strong>Peso:</strong> {poke.weight}
+            <Label>Peso:</Label><span>{poke.weight}</span>
           </InfoItem>
           <InfoItem>
-            <strong>Tipos:</strong> {poke.types.map(t => t.type.name).join(', ')}
+            <Label>Tipos:</Label><span>{poke.types.map(t => t.type.name).join(', ')}</span>
           </InfoItem>
           <InfoItem>
-            <strong>Habilidades:</strong> {poke.abilities.map(a => a.ability.name).join(', ')}
+            <Label>Habilidades:</Label><span>{poke.abilities.map(a => a.ability.name).join(', ')}</span>
           </InfoItem>
         </InfoList>
       </Modal>
