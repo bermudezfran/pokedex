@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-empty-object-type */
 import React, { useEffect, useState } from 'react';
 import styled, { keyframes } from 'styled-components';
@@ -43,7 +44,7 @@ const SkeletonGrid = styled.div`
   }
 `;
 
-const SkeletonCard = styled.div`
+const SkeletonCard = styled.div.attrs({ 'data-testid': 'skeleton-card' } as any)`
   height: 150px;
   border-radius: 0.5rem;
   background: #e2e8f0;
