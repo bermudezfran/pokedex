@@ -1,7 +1,13 @@
-import React, { useState } from "react";
+import React from "react";
 import styled, { keyframes } from "styled-components";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
-import { fetchPokemonDetail, selectList } from "../../store/PokemonSlice";
+import {
+  fetchPokemonDetail,
+  selectList,
+  selectCount, 
+  selectCurrentPage,
+  setPage 
+} from "../../store/PokemonSlice";
 import Card from "./Card";
 
 const fade = keyframes`
@@ -64,19 +70,25 @@ const ITEMS_PER_PAGE = 20;
 
 export const CardsContainer: React.FC = () => {
   const dispatch = useAppDispatch();
-  const pokes = useAppSelector(selectList);
-  const [page, setPage] = useState(0);
+  const pokes = useAppSelector(selectList); 
+  const totalCount = useAppSelector(selectCount); 
+  const currentPage = useAppSelector(selectCurrentPage);
 
-  const start = page * ITEMS_PER_PAGE;
-  const end = start + ITEMS_PER_PAGE;
-  const pagedList = pokes.slice(start, end);
-  const totalPages = Math.ceil(pokes.length / ITEMS_PER_PAGE);
+  const totalPages = Math.ceil(totalCount / ITEMS_PER_PAGE); 
+
+  const goToPreviousPage = () => {
+    dispatch(setPage(Math.max(currentPage - 1, 0)));
+  };
+
+  const goToNextPage = () => {
+    dispatch(setPage(Math.min(currentPage + 1, totalPages - 1)));
+  };
 
   return (
     <>
       <Titulo>Pokedéx Go</Titulo>
       <Grid>
-        {pagedList.map((p) => (
+        {pokes.map((p) => (
           <Card
             key={p.url}
             name={p.name}
@@ -88,17 +100,17 @@ export const CardsContainer: React.FC = () => {
 
       <Pagination>
         <PageButton
-          disabled={page === 0}
-          onClick={() => setPage((p) => Math.max(p - 1, 0))}
+          disabled={currentPage === 0}
+          onClick={goToPreviousPage}
         >
           «
         </PageButton>
         <PageInfo>
-          Página {page + 1} de {totalPages}
+          Página {currentPage + 1} de {totalPages}
         </PageInfo>
         <PageButton
-          disabled={page + 1 >= totalPages}
-          onClick={() => setPage((p) => Math.min(p + 1, totalPages - 1))}
+          disabled={currentPage + 1 >= totalPages}
+          onClick={goToNextPage}
         >
           »
         </PageButton>

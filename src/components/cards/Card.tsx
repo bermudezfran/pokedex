@@ -7,8 +7,8 @@ interface CardProps {
   imageUrl?: string
 }
 
-const CardContainer = styled.div<{ clickable: boolean }>`
-  cursor: ${({ clickable }) => (clickable ? 'pointer' : 'default')};
+const CardContainer = styled.div<{ $clickable: boolean }>`
+  cursor: ${({ $clickable }) => ($clickable ? 'pointer' : 'default')};
   border: 1px solid #cbd5e0;
   border-radius: 0.5rem;
   padding: 1rem;
@@ -18,8 +18,8 @@ const CardContainer = styled.div<{ clickable: boolean }>`
   align-items: center;
   background-color: #f9fafb;
   &:hover {
-    ${({ clickable }) =>
-      clickable
+    ${({ $clickable }) =>
+      $clickable
         ? `box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);`
         : ''}
   }
@@ -41,7 +41,7 @@ const CardTitle = styled.h3`
 const Card: React.FC<CardProps> = ({ name, onClick, imageUrl }) => {
   const displayName = name.charAt(0).toUpperCase() + name.slice(1);
   return (
-    <CardContainer onClick={onClick} clickable={!!onClick}>
+    <CardContainer onClick={onClick} $clickable={!!onClick}>
       {imageUrl && <CardImage src={imageUrl} alt={displayName} />}
       <CardTitle>{displayName}</CardTitle>
     </CardContainer>

@@ -20,7 +20,7 @@ describe('ContainerData', () => {
       </ContainerData>
     )
     const skeletons = screen.getAllByTestId('skeleton-card')
-    expect(skeletons.length).toBe(8)
+    expect(skeletons.length).toBe(20)
   })
 
   it('muestra mensaje de error cuando status es failed', () => {

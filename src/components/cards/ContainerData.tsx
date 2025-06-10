@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import styled, { keyframes } from 'styled-components';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { fetchPokemonList, clearSelected, selectStatus } from '../../store/PokemonSlice';
+import { fetchPokemonList, clearSelected, selectStatus, selectCurrentPage } from '../../store/PokemonSlice'; 
 
 const fadeIn = keyframes`
   from { opacity: 0; }
@@ -24,6 +24,7 @@ const LoadingOverlay = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 1000; 
 `;
 
 const shimmer = keyframes`
@@ -33,14 +34,18 @@ const shimmer = keyframes`
 
 const SkeletonGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(2, 1fr); 
   gap: 1rem;
+  padding: 1rem; 
 
   @media (min-width: 640px) {
     grid-template-columns: repeat(3, 1fr);
   }
   @media (min-width: 768px) {
     grid-template-columns: repeat(4, 1fr);
+  }
+  @media (min-width: 1024px) {
+    grid-template-columns: repeat(5, 1fr);
   }
 `;
 
@@ -61,26 +66,29 @@ const SkeletonCard = styled.div.attrs({ 'data-testid': 'skeleton-card' } as any)
 export const ContainerData: React.FC<React.PropsWithChildren<{}>> = ({ children }) => {
   const dispatch = useAppDispatch();
   const status = useAppSelector(selectStatus);
+  const currentPage = useAppSelector(selectCurrentPage);
   const [showOverlay, setShowOverlay] = useState(true);
 
   useEffect(() => {
-    dispatch(fetchPokemonList());
+    dispatch(fetchPokemonList(currentPage));
     return () => { dispatch(clearSelected()); };
-  }, [dispatch]);
+  }, [dispatch, currentPage]); 
 
   useEffect(() => {
     if (status === 'idle') {
       const t = setTimeout(() => setShowOverlay(false), 300);
       return () => clearTimeout(t);
+    } else {
+      setShowOverlay(true); 
     }
   }, [status]);
 
   if (status === 'loading') {
     return (
       <LoadingOverlay>
-        <div style={{ width: '80%', maxWidth: 600 }}>
+        <div style={{ width: '90%', maxWidth: 800 }}> 
           <SkeletonGrid>
-            {Array.from({ length: 8 }).map((_, i) => (
+            {Array.from({ length: 20 }).map((_, i) => (
               <SkeletonCard key={i} />
             ))}
           </SkeletonGrid>
@@ -89,6 +97,7 @@ export const ContainerData: React.FC<React.PropsWithChildren<{}>> = ({ children 
     );
   }
 
+  
   if (status === 'failed') {
     return <p style={{ textAlign: 'center', marginTop: '2rem', color: '#e53e3e' }}>Error al cargar los pokemons.</p>;
   }
@@ -96,7 +105,7 @@ export const ContainerData: React.FC<React.PropsWithChildren<{}>> = ({ children 
   return (
     <>
       {showOverlay && (
-        <LoadingOverlay style={{ animation: 'opacity 0.3s ease-out forwards', opacity: 1 }} />
+        <LoadingOverlay style={{ animation: 'opacity 0.3s ease-out forwards', opacity: 0 }} /> 
       )}
       <Wrapper>
         {children}
